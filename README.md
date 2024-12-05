@@ -8,6 +8,9 @@ This program simulates a simple 3 node graph of 3 individuals, each with the abi
 
 In order to prove this program worked, all of the above lines of code must resolve to true, as it means that the target individual of the message had received it, decrypted the signature, re-hashed the message, and determined the re-hashed message to match the signature. This in turn means that the implemented nodes, message sharing and receiving functions, message creating function, SHA hash function, and RSA encryption function all work as intended.
 
+
 And, it does.
 
 ![image](https://github.com/user-attachments/assets/75006f42-6fc7-46a9-b5a8-434be9ca40ea)
+
+This code was tested using the Programiz website's online JavaScript  compiler.
