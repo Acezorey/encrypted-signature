@@ -14,6 +14,18 @@ class Individual{
 
     //Uses the simplified SHA algorithm to create a signature
     //Returns signature
+    xorStrings(string1, string2){ //Helper method for SHA algorithm
+        let res = "";
+
+        for(let i = 0; i < string1.length; i++){ //both strings are the same length
+            let c1 = string1.charCodeAt(i);
+            let c2 = string2.charCodeAt(i);
+            let xc = c1 ^ c2;
+            res += String.fromCharCode(xc);
+        }
+
+        return res;
+    }
     sign(note){
         let signature = null;
         let noteBytes = [];
@@ -40,22 +52,10 @@ class Individual{
         //xor's every string in noteBytes array with one another to generate unique 16 bit signature
         signature = noteBytes[0];
         for(let i = 0; i < noteBytes.length; i++){
-            signature = xorStrings(signature, noteBytes[i]);
+            signature = this.xorStrings(signature, noteBytes[i]);
         }
 
         return signature;
-    }
-    xorStrings(string1, string2){ //Helper method for SHA algorithm
-        let res = "";
-
-        for(let i = 0; i < string1.length; i++){ //both strings are the same length
-            let c1 = string1.charCodeAt(i);
-            let c2 = string2.charCodeAt(i);
-            let xc = c1 ^ c2;
-            res += String.fromCharCode(xc);
-        }
-
-        return res;
     }
 
     //Uses the RSA algorithm to encrypt a signature using the target recipient's public key
@@ -66,9 +66,9 @@ class Individual{
         let enSig = "";
 
         switch(num){
-            case 1: keys = publicKeys.alice; break;
-            case 2: keys = publicKeys.jane; break;
-            case 3: keys = publicKeys.bob; break;
+            case 1: keys = this.publicKeys.alice; break;
+            case 2: keys = this.publicKeys.jane; break;
+            case 3: keys = this.publicKeys.bob; break;
         }
 
         for(let i = 0; i < sigArray.length; i++){
@@ -100,8 +100,8 @@ class Individual{
     }
 
     send(message, id){
-        for(connection in connections){ //Ensures that the message does not get sent back to the person who already sent it in the first place
-            if(connection.id != id) connection.receive(message);
+        for(let i = 0; i < this.connections.length; i++){ //Ensures that the message does not get sent back to the person who already sent it in the first place
+            if(this.connections[i].id != id) this.connections[i].receive(message);
         }
     }
 
@@ -119,7 +119,7 @@ class Individual{
     }
 }
 
-//The math for these keys were done via keygen
+//The math for these keys were done via the keygen script
 let alice = new Individual(1, [173, 323]);
 let jane = new Individual(2, [53, 299]);
 let bob = new Individual(3, [187, 319]);
@@ -129,5 +129,8 @@ jane.addConnection(alice);
 jane.addConnection(bob);
 bob.addConnection(jane);
 
+
+//==TESTING OF PROGRAM==
 alice.create("hello", 3);
-console.log(bob.verifiedMessage);
+console.log(bob.verifiedMessage); //Must resolve to true
+//======================
