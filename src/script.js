@@ -94,20 +94,23 @@ class Individual{
     }
 
     create(note, num){
-        let message = {id: num, info: note, signature: null};
+        let message = {id: num, info: note, signature: null, past: null};
         message.signature = this.encrypt(this.sign(message.info), num);
-        this.send(message, this.id);
+        message.past = new Set();
+        message.past.add(this.id);
+        this.send(message);
     }
 
-    send(message, id){
+    send(message){
         for(let i = 0; i < this.connections.length; i++){ //Ensures that the message does not get sent back to the person who already sent it in the first place
-            if(this.connections[i].id != id) this.connections[i].receive(message, id);
+            if(!message.past.has(this.connections[i].id)) this.connections[i].receive(message);
         }
     }
 
-    receive(message, id){
+    receive(message){
         if(message.id != this.id){
-            this.send(message, id);
+            message.past.add(this.id);
+            this.send(message);
         }
         else{
             this.receivedMessage = message;
