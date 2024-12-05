@@ -129,5 +129,5 @@ jane.addConnection(alice);
 jane.addConnection(bob);
 bob.addConnection(jane);
 
-alice.create("hello", 2);
+alice.create("hello", 3);
 console.log(bob.verifiedMessage);
