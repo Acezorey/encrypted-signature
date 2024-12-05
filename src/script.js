@@ -4,7 +4,7 @@ class Individual{
         this.connections = [];
         this.receivedMessage = null;
         this.verifiedMessage = false;
-        this.publicKeys = {"alice": [5, 14], "jane": [11, 21], "bob": [3, 10]}; //keep public keys of all individuals
+        this.publicKeys = {"alice": [5, 323], "jane": [5, 299], "bob": [3, 319]}; //keep public keys of all individuals
         this.privateKey = key; 
     }
 
@@ -72,7 +72,8 @@ class Individual{
         }
 
         for(let i = 0; i < sigArray.length; i++){
-            enSig = enSig + "" + String.fromCharCode(((sigArray.charCodeAt(i))**keys[0])%keys[1]);
+            let ccode = Number( BigInt( BigInt(sigArray[i].charCodeAt(0)) ** BigInt(keys[0])) % BigInt(keys[1])); //The use of BigInt is necessary to process potentially massive exponents
+            enSig = enSig + "" + String.fromCharCode(ccode);
         }
 
         return enSig;
@@ -85,7 +86,8 @@ class Individual{
         let deSig = "";
     
         for(let i = 0; i < sigArray.length; i++){
-            deSig = deSig + "" + String.fromCharCode(((sigArray.charCodeAt(i))**keys[0])%keys[1]);
+            let ccode = Number( BigInt( BigInt(sigArray[i].charCodeAt(0)) ** BigInt(keys[0])) % BigInt(keys[1]));
+            deSig = deSig + "" + String.fromCharCode(ccode);
         }
 
         return deSig;
@@ -118,13 +120,14 @@ class Individual{
 }
 
 //The math for these keys were done via keygen
-let alice = new Individual(1, [11, 14]);
-let jane = new Individual(2, [11, 21]);
-let bob = new Individual(3, [7, 10]);
+let alice = new Individual(1, [173, 323]);
+let jane = new Individual(2, [53, 299]);
+let bob = new Individual(3, [187, 319]);
 
 alice.addConnection(jane);
 jane.addConnection(alice);
 jane.addConnection(bob);
 bob.addConnection(jane);
 
-
+alice.create("hello", 2);
+console.log(bob.verifiedMessage);
