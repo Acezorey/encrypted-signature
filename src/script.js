@@ -117,9 +117,9 @@ class Individual{
     }
 }
 
-//The math for these keys were done by hand
+//The math for these keys were done via keygen
 let alice = new Individual(1, [11, 14]);
-let jane = new Individual(2, [23, 21]);
+let jane = new Individual(2, [11, 21]);
 let bob = new Individual(3, [7, 10]);
 
 alice.addConnection(jane);
