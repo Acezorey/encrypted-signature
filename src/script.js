@@ -1,10 +1,11 @@
 class Individual{
-    constructor(id){
+    constructor(id, key){
         this.id = id;
         this.connections = [];
-        this.receivedMessage = "";
+        this.receivedMessage = null;
         this.verifiedMessage = false;
-        this.publicKeys = {1: [], 2: [], 3: []}; //keep public keys of all individuals
+        this.publicKeys = {"alice": [5, 14], "jane": [11, 21], "bob": [3, 10]}; //keep public keys of all individuals
+        this.privateKey = key; 
     }
 
     addConnection(node){
@@ -28,7 +29,7 @@ class Individual{
         }
         if(word.length > 0) noteBytes.push(word);
 
-        //Adds padding to final entry in noteBytes array if final entry is != 16 bytes in length
+        //Adds padding to final entry in noteBytes array if final entry is < 16 bytes in length
         let final = noteBytes[noteBytes.length - 1];
         if(final.length != 16){
             for(let i = final.length - 1; i < 16; i++){
@@ -57,15 +58,37 @@ class Individual{
         return res;
     }
 
-    //Uses the RSA algorithm to encrypt a signature
+    //Uses the RSA algorithm to encrypt a signature using the target recipient's public key
     //Returns encrypted signature
     encrypt(signature, num){
+        let keys;
+        let sigArray = signature.split("");
+        let enSig = "";
 
+        switch(num){
+            case 1: keys = publicKeys.alice; break;
+            case 2: keys = publicKeys.jane; break;
+            case 3: keys = publicKeys.bob; break;
+        }
+
+        for(let i = 0; i < sigArray.length; i++){
+            enSig = enSig + "" + String.fromCharCode(((sigArray.charCodeAt(i))**keys[0])%keys[1]);
+        }
+
+        return enSig;
     }
 
-    //Reverses encryption
+    //Reverses encryption using private key
     decrypt(signature){
+        let keys = this.privateKey;
+        let sigArray = signature.split("");
+        let deSig = "";
+    
+        for(let i = 0; i < sigArray.length; i++){
+            deSig = deSig + "" + String.fromCharCode(((sigArray.charCodeAt(i))**keys[0])%keys[1]);
+        }
 
+        return deSig;
     }
 
     create(note, num){
@@ -85,18 +108,19 @@ class Individual{
             this.send(message, this.id);
         }
         else{
+            this.receivedMessage = message;
             let sig = this.decrypt(message.signature);
-            if(sig === this.encrypt(this.sign(message.info), this.id)){ //Decrypts and re-encrypts the signature with own public key to see if they match
+            if(sig === this.sign(message.info)){ //Decrypts and reconstructs the signature using the message to see if they match
                 this.verifiedMessage = true;
             }
         }
     }
 }
 
-
-let alice = new Individual(1);
-let jane = new Individual(2);
-let bob = new Individual(3);
+//The math for these keys were done by hand
+let alice = new Individual(1, [11, 14]);
+let jane = new Individual(2, [23, 21]);
+let bob = new Individual(3, [7, 10]);
 
 alice.addConnection(jane);
 jane.addConnection(alice);
