@@ -94,7 +94,7 @@ class Individual{
     }
 
     create(note, num){
-        let message = {id: num, info: note, signature: null, past: null};
+        let message = {targetId: num, info: note, signature: null, past: null};
         message.signature = this.encrypt(this.sign(message.info), num);
         message.past = new Set();
         message.past.add(this.id);
@@ -108,7 +108,7 @@ class Individual{
     }
 
     receive(message){
-        if(message.id != this.id){
+        if(message.targetId != this.id){
             message.past.add(this.id);
             this.send(message);
         }
