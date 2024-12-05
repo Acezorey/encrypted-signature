@@ -1,4 +1,4 @@
-//Not connected to the rest of the graph, but this code is what I used to generate the public and private keys for RSA
+//Not connected to the rest of the graph, but this code is what I used to generate the public and private keys for the RSA algorithm
 
 //==INITIAL PRIME VALUES==
 let p = 17; //p and q are both prime numbers that can be chosen arbitrarily

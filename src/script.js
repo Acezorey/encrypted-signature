@@ -101,13 +101,13 @@ class Individual{
 
     send(message, id){
         for(let i = 0; i < this.connections.length; i++){ //Ensures that the message does not get sent back to the person who already sent it in the first place
-            if(this.connections[i].id != id) this.connections[i].receive(message);
+            if(this.connections[i].id != id) this.connections[i].receive(message, id);
         }
     }
 
-    receive(message){
+    receive(message, id){
         if(message.id != this.id){
-            this.send(message, this.id);
+            this.send(message, id);
         }
         else{
             this.receivedMessage = message;
@@ -131,6 +131,18 @@ bob.addConnection(jane);
 
 
 //==TESTING OF PROGRAM==
-alice.create("hello", 3);
-console.log(bob.verifiedMessage); //Must resolve to true
+alice.create("hello world", 2);
+console.log(jane.verifiedMessage); //Must all resolve to true
+alice.create("hello world", 3);
+console.log(bob.verifiedMessage);
+
+jane.create("hello world", 1);
+console.log(alice.verifiedMessage);
+jane.create("hello world", 3);
+console.log(bob.verifiedMessage);
+
+bob.create("hello world", 1);
+console.log(alice.verifiedMessage);
+bob.create("hello world", 2);
+console.log(jane.verifiedMessage);
 //======================
