@@ -11,6 +11,7 @@ In order to prove this program worked, all of the above lines of code must resol
 
 And, it does.
 
-![image](https://github.com/user-attachments/assets/75006f42-6fc7-46a9-b5a8-434be9ca40ea)
+![image](https://github.com/user-attachments/assets/e77b8e05-d723-49a3-9771-18b7f7fe884c)
+
 
 This code was tested using the Programiz website's online JavaScript  compiler.
