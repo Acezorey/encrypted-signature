@@ -134,18 +134,18 @@ bob.addConnection(jane);
 
 
 //==TESTING OF PROGRAM==
-alice.create("I wish to sed this message to you", 2);
+alice.create("I wish to send this message to you", 2);
 console.log(jane.verifiedMessage); //Must all resolve to true
-alice.create("I wish to sed this message to you", 3);
+alice.create("I wish to send this message to you", 3);
 console.log(bob.verifiedMessage);
 
-jane.create("I wish to sed this message to you", 1);
+jane.create("I wish to send this message to you", 1);
 console.log(alice.verifiedMessage);
-jane.create("I wish to sed this message to you", 3);
+jane.create("I wish to send this message to you", 3);
 console.log(bob.verifiedMessage);
 
-bob.create("I wish to sed this message to you", 1);
+bob.create("I wish to send this message to you", 1);
 console.log(alice.verifiedMessage);
-bob.create("I wish to sed this message to you", 2);
+bob.create("I wish to send this message to you", 2);
 console.log(jane.verifiedMessage);
 //======================
